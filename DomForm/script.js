@@ -1,0 +1,83 @@
+const form = document.getElementById('formCadastro')
+const campoNome = document.getElementById('nome')
+const campoEmail = document.getElementById('email')
+const campoIdade = document.getElementById('idade')
+const campoMensagemTexto = document.getElementById('mensagem')
+const contador = document.getElementById('contador')
+const mensagemEnvio = document.getElementById('mensagem-envio')
+
+campoMensagemTexto.addEventListener('input', function(){
+    const quantidade = campoMensagemTexto.value.lenght
+    contador.textContent = quantidade + " / 100 caracteres"
+
+})
+
+const campoDeTexto = [campoNome, campoEmail, campoIdade]
+
+for(let i = 0; i < campoDeTexto.lenght; i++){
+    const campo = campoDeTexto[i]
+
+    campo.addEventListener('focus', function(){
+    campo.classList.add('foco')
+    })
+
+    campo.addEventListener('blur', function(){
+        campo.classList.remove('foco')
+    })
+
+}
+
+const checkboxInteresses = document.querySelector('input[name=Interesses]')
+checkboxInteresses.forEach(function(checkbox){
+     checkbox.addEventListener('change', function(){
+       if (checkbox,checked) {
+        console.log("Marcou o Interesse", checkbox.valeu)
+       } else {
+        console.log("Desmarcou o Interesse", checkbox,value)
+       }
+     })
+})
+
+form.addEventListener('submit', function(event){
+  event.preventDefault()
+
+  campoNome.classList.remove("erro")
+  campoEmail.classList.remove("email")
+  campoIdade.classList.remove("erro")
+
+  const nome = campoNome.value.trim()
+  const email = campoEmail.value.trim()
+  const idade = Number(campoIdade.value)
+
+  let valido = true
+  let erros = []
+
+  if (nome ===""){
+    valido = false
+    erros.push("O nome é obrigatório")
+    campoNome.classList.add('erro')
+  }
+
+  if (!email.includes("@")) {
+    erros.push("Digite um email valido")
+    campoEmail.classList.add('erro')
+
+
+  }
+
+  if(idade <= 0 || idade > 120){
+    valido = false
+    erros.push("Digite uma idade valida")
+    campoIdade.classList.add("erro")
+  }
+
+  if (valido){
+    mensagemEnvio.className = "sucesso"
+    mensagemEnvio.textContent = "Cadastro de" + nome + "realizado com Sucesso"
+    form.reset()
+    contador.textContent = "0 / 100 caracteres"
+  } else {
+    mensagemEnvio.className = "falha"
+    mensagemEnvio.textContent  = erros.join("")
+  }
+})
